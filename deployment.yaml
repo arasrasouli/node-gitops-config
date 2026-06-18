@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: node-gitops
-          image: node-gitops-app:v1
+          image: ghcr.io/arasrasouli/node-gitops-app:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
