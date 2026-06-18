@@ -1,0 +1,6 @@
+# Dedicated namespace so our app is separate from the Kubernetes engine.
+# `kubectl get all -n demo` then shows only our app.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo

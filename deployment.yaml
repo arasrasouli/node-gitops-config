@@ -1,0 +1,37 @@
+# Desired state of the app. ArgoCD keeps the cluster in sync with this.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-gitops
+  namespace: demo
+  labels:
+    app: node-gitops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-gitops
+  template:
+    metadata:
+      labels:
+        app: node-gitops
+    spec:
+      containers:
+        - name: node-gitops
+          image: node-gitops-app:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          # Probes hit the /health endpoint we built.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5
