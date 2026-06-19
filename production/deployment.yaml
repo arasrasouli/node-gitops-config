@@ -1,0 +1,36 @@
+# PRODUCTION: 3 replicas, updated only on a version tag (release).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-gitops
+  namespace: demo-production
+  labels:
+    app: node-gitops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: node-gitops
+  template:
+    metadata:
+      labels:
+        app: node-gitops
+    spec:
+      containers:
+        - name: node-gitops
+          image: ghcr.io/arasrasouli/node-gitops-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5

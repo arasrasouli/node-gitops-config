@@ -1,9 +1,9 @@
-# Desired state of the app. ArgoCD keeps the cluster in sync with this.
+# STAGING: 1 replica, updated automatically on every merge to master.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: node-gitops
-  namespace: demo
+  namespace: demo-staging
   labels:
     app: node-gitops
 spec:
@@ -22,7 +22,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
-          # Probes hit the /health endpoint we built.
           livenessProbe:
             httpGet:
               path: /health
